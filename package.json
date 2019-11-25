@@ -47,11 +47,8 @@
         "passport-local": "^1.0.0",
         "pg": "^7.14.0",
         "pug": "^2.0.4",
-        "reflect-metadata": "^0.1.13",
         "request": "^2.88.0",
         "request-promise": "^4.2.4",
-        "typeorm": "^0.2.20",
-        "typeorm-store": "^1.2.0",
         "winston": "^3.2.1"
     },
     "devDependencies": {

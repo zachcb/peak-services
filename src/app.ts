@@ -8,10 +8,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import bluebird from "bluebird";
 
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-
-import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
+import { POSTGRES_URI, SESSION_SECRET } from "./util/secrets";
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
@@ -23,28 +20,11 @@ import * as contactController from "./controllers/contact";
 import * as passportConfig from "./config/passport";
 
 async function initialize(connection) {
-    // // Create Express server
-    // const app = express();
-
-    // // Connect to MongoDB
-    // const mongoUrl = MONGODB_URI;
-    // mongoose.Promise = bluebird;
-
-    // mongoose.connect(mongoUrl, {
-    //   useNewUrlParser: true,
-    //   useCreateIndex: true,
-    //   useUnifiedTopology: true,
-    // }).then(
-    //   () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
-    // ).catch((err) => {
-    //   console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`);
-    // // process.exit();
-    // });
   // Create Express server
   const app = express();
 
   // Connect to MongoDB
-  const mongoUrl = MONGODB_URI;
+  const mongoUrl =POSTGRES_URI;
   mongoose.Promise = bluebird;
 
   mongoose.connect(mongoUrl, {
@@ -144,12 +124,7 @@ async function initialize(connection) {
   });
 }
 
-// create connection with database
-// note that it's not active database connection
-// TypeORM creates connection pools and uses them for your requests
-createConnection()
-  .then(initialize)
-  .catch((error) => console.log("TypeORM connection error: ", error));
 
 
-// export default app;
+
+export default app;

@@ -2,6 +2,13 @@ import errorHandler from "errorhandler";
 
 import app from "./app";
 
+// create connection with database
+// note that it's not active database connection
+// TypeORM creates connection pools and uses them for your requests
+createConnection()
+  .then(app)
+  .catch((error) => console.log("TypeORM connection error: ", error));
+
 /**
  * Error Handler. Provides full stack - remove for production
  */
