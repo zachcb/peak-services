@@ -12,7 +12,7 @@ if (fs.existsSync(".env")) {
 export const ENVIRONMENT = process.env.NODE_ENV;
 const prod = ENVIRONMENT === "production"; // Anything else is treated as 'dev'
 
-export const {SESSION_SECRET} = process.env;
+export const { SESSION_SECRET } = process.env;
 export const POSTGRES_URI = prod ? process.env.POSTGRES_URI : process.env.POSTGRES_URI_LOCAL;
 
 if (!SESSION_SECRET) {
@@ -20,11 +20,11 @@ if (!SESSION_SECRET) {
   process.exit(1);
 }
 
-if (!MONGODB_URI) {
+if (!POSTGRES_URI) {
   if (prod) {
-    logger.error("No mongo connection string. Set MONGODB_URI environment variable.");
+    logger.error("No postgres connection string. Set POSTGRES_URI environment variable.");
   } else {
-    logger.error("No mongo connection string. Set MONGODB_URI_LOCAL environment variable.");
+    logger.error("No postgres connection string. Set POSTGRES_URI_LOCAL environment variable.");
   }
   process.exit(1);
 }
