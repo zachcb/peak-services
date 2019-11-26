@@ -2,16 +2,18 @@
 class PostgresConnector {
   connection: any = null;
 
-  constructor(connection: object){
+  constructor(connection: object) {
     this.connection = connection;
   }
-  closeConnection(){
+
+  closeConnection() {
     this.connection.close();
   }
-  collection(collectionName: string){
+
+  collection(collectionName: string) {
     // caching, batching and logging could be added here
     return this.connection.collection(collectionName);
   }
 }
 
-export default PostgresConnector
+export default PostgresConnector;
