@@ -14,7 +14,7 @@
     docker-compose up --build
 ```
 
-Docker builds the node api server and pulls down redis, redis-commander, postgres, pgadmin, and prisma. Docker then runs nodemon to watch for file changes.
+Docker builds the node api server and pulls down redis, redis-commander, postgres, and pgadmin. Docker then runs nodemon to watch for file changes.
 
 
 ## Feature Roadmap
