@@ -2,7 +2,6 @@ import path from "path";
 import express from "express";
 import flash from "express-flash";
 import session from "express-session";
-import graphqlHTTP from "express-graphql";
 import redis from "redis";
 import connectRedis from "connect-redis";
 import lusca from "lusca";
