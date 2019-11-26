@@ -1,10 +1,10 @@
 {
-  "name": "peak-api",
+  "name": "peak-services",
   "version": "0.1.0",
-  "description": "An API for an Apartment Finder",
+  "description": "Peak Services: API, Database, and Scrapping services",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zachcb/peak-api"
+    "url": "https://github.com/zachcb/peak-server"
   },
   "author": "Zach Barnes",
   "license": "MIT",
