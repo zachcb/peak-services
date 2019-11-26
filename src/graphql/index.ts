@@ -1,29 +1,15 @@
 import { ApolloServer } from "apollo-server-express";
 
-import QueryType from "./types/Query";
-import LocationType from "./types/Location";
+import LocationResolver from "./location/resolver";
+import LocationSchema from "./location/schema";
 
-import QueryResolver from "./resolvers/Query";
-import LocationResolver from "./resolvers/Location";
-// const QueryQuery = new GraphQLObjectType({
-//   name: "QueryQueryType",
-//   fields: {
-//     location: {
-//       type: LocationType,
-//       args: { id: { type: GraphQLString } },
-//       resolve(Query, args) {
-//         return axios.get(`http://localhost:3000/locations/${args.id}`)
-//           .then((response: object) => response.data);
-//       },
-//     },
-//   },
-// });
-
+import QueryResolver from "./query/resolver";
+import QuerySchema from "./query/schema";
 
 const server = new ApolloServer({
   typeDefs: [
-    QueryType,
-    LocationType,
+    QuerySchema,
+    LocationSchema,
   ],
   resolvers: {
     Query: QueryResolver,

@@ -20,8 +20,8 @@ services:
     image: redis
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
-      - ./.docker/redis/data:/usr/local/etc/redis/data:Z
-      - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:Z
+      - redis:/usr/local/etc/redis/data
+      - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - 6379:6379
     expose:
@@ -52,7 +52,7 @@ services:
       - "5432:5432"
     volumes:
       - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
-      - "./.docker/postgres/postgres-data:/var/lib/postgresql/data:Z"
+      - "pgdata:/var/lib/postgresql/data"
     networks:
       - postgres
     restart: unless-stopped
@@ -70,13 +70,14 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     volumes:
-      - ./.docker/pgadmin:/root/.pgadmin:Z
+      - pgadmin:/root/.pgadmin
     networks:
       - postgres
     restart: unless-stopped
 
 volumes:
-  postgres:
+  redis:
+  pgdata:
   pgadmin:
 
 networks:
