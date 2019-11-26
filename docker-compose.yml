@@ -4,14 +4,15 @@ services:
   api:
     container_name: api
     env_file: .env
-    working_dir: /mnt
     volumes:
-      - .:/mnt
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
-      - db
+      - postgres
       - redis
     ports:
       - 3000:3000
+      - 9229:9229
     build: .
 
   redis:
@@ -21,7 +22,9 @@ services:
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - "6379:6379"
+      - 6379:6379
+    expose:
+      - 6379
 
   redis-commander:
     container_name: redis-commander
@@ -35,38 +38,44 @@ services:
   postgres:
     container_name: postgres
     image: postgres:latest
+    environment:
+      PG_MODE: primary
+      PG_PRIMARY_USER: postgres
+      PG_PRIMARY_PASSWORD: admin
+      PG_DATABASE: db
+      PG_USER: zach
+      PG_PASSWORD: admin
+      PG_ROOT_PASSWORD: admin
+      PGDATA: /data/postgres
     ports:
       - "5432:5432"
     volumes:
-      # - /data/postgres:/data/postgres
-      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
-      - "/data/postgres:/var/lib/postgresql/data"
+      - postgres:/data/postgres
     networks:
       - postgres
+    restart: unless-stopped
 
   pgadmin:
-    links:
-      - postgres:postgres
     container_name: pgadmin
     image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: zach@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    links:
+      - postgres
+    depends_on:
+      - postgres
     ports:
-      - "8080:80"
+      - "${PGADMIN_PORT:-5050}:80"
     volumes:
-      - /data/pgadmin:/root/.pgadmin
-    env_file:
-      - docker.env
+      - pgadmin:/root/.pgadmin
     networks:
       - postgres
-  
-  postgres-data:
-    container_name: postgres-data
-    image: busybox
-    volumes:
-      - /var/lib/postgresql/data
+    restart: unless-stopped
 
 volumes:
-  mydata:
-  postgres-data:
+  postgres:
+  pgadmin:
 
 networks:
   postgres:
