@@ -22,7 +22,7 @@ apolloServer.applyMiddleware({ app });
 const RedisStore = connectRedis(session);
 const promisifyRedis = bluebird.promisifyAll(redis);
 const redisClient = promisifyRedis.createClient({ host: "redis" });
-
+redisClient.set("1", "3", redis.print);
 // Express configuration
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "../views"));
