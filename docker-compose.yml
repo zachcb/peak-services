@@ -47,13 +47,13 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      # PG_MODE: primary
-      # PG_PRIMARY_USER: postgres
-      # PG_PRIMARY_PASSWORD: admin
-      PG_DATABASE: db
-      PG_USER: zach
+      PG_MODE: primary
+      PG_PRIMARY_USER: postgres
+      PG_PRIMARY_PASSWORD: admin
+      PG_DATABASE: postgres
+      PG_USER: postgres
       PG_PASSWORD: admin
-      # PG_ROOT_PASSWORD: admin
+      PG_ROOT_PASSWORD: admin
       PGDATA: /var/lib/postgresql/data
     ports:
       - "5432:5432"
@@ -68,7 +68,7 @@ services:
     container_name: pgadmin
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: zach@admin.com
+      PGADMIN_DEFAULT_EMAIL: admin@peak.com
       PGADMIN_DEFAULT_PASSWORD: admin
     links:
       - postgres
@@ -80,11 +80,17 @@ services:
       - pgadmin:/root/.pgadmin
     networks:
       - postgres
+    logging:
+      driver: none
     restart: unless-stopped
 
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
+    depends_on:
+      - postgres
+    networks:
+      - postgres
     ports:
       - "4466:4466"
     environment:
@@ -95,7 +101,7 @@ services:
             connector: postgres
             host: postgres
             port: 5432
-            user: zach
+            user: postgres
             password: admin
 
 volumes:
