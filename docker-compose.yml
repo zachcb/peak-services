@@ -10,6 +10,9 @@ services:
     depends_on:
       - postgres
       - redis
+    networks:
+      - postgres
+      - redis
     ports:
       - 3000:3000
       - 9229:9229
@@ -22,6 +25,8 @@ services:
     volumes:
       - redis:/usr/local/etc/redis/data
       - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - redis
     ports:
       - 6379:6379
     expose:
@@ -33,6 +38,8 @@ services:
     image: rediscommander/redis-commander:latest
     environment:
       - REDIS_HOSTS=local:redis:6379
+    networks:
+      - redis
     ports:
       - 8081:8081
 
@@ -40,13 +47,13 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      PG_MODE: primary
-      PG_PRIMARY_USER: postgres
-      PG_PRIMARY_PASSWORD: admin
+      # PG_MODE: primary
+      # PG_PRIMARY_USER: postgres
+      # PG_PRIMARY_PASSWORD: admin
       PG_DATABASE: db
       PG_USER: zach
       PG_PASSWORD: admin
-      PG_ROOT_PASSWORD: admin
+      # PG_ROOT_PASSWORD: admin
       PGDATA: /var/lib/postgresql/data
     ports:
       - "5432:5432"
@@ -82,4 +89,6 @@ volumes:
 
 networks:
   postgres:
+    driver: bridge
+  redis:
     driver: bridge

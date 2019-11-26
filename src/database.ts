@@ -1,29 +1,24 @@
-import { Pool } from "pg";
+import { Client } from "pg";
 
-const pool = new Pool({
-  host: "localhost",
-  user: "admin",
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+const client = new Client({
+  host: "postgres",
+  database: "postgres",
+  port: 5432,
+  user: "postgres",
+  password: "admin",
+  ssl: false,
+  // eslint-disable-next-line
+  statement_timeout: 30000,
 });
 
-pool.connect((err, client, release) => {
+client.connect((err: any) => {
   if (err) {
-    return console.error("Error acquiring client", err.stack);
+    console.error("connection error", err.stack);
+  } else {
+    console.log("connected");
   }
-
-  client.query("SELECT NOW()", (clientError, clientResult) => {
-    release();
-
-    if (clientError) {
-      return console.error("Error executing query", clientError.stack);
-    }
-
-    console.log(clientResult.rows);
-  });
 });
 
 export default {
-  query: (text: string, params: any) => pool.query(text, params),
+  query: (text: string, params: any) => client.query(text, params),
 };
