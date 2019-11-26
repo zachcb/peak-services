@@ -32,10 +32,12 @@ module.exports = {
 
   rules: {
     "quotes": [1, "double"],
+    "no-console": 0,
+    "consistent-return": 0,
     "import/no-extraneous-dependencies": [2, { "packageDir": "./" }],
     "@typescript-eslint/quotes": [1, "double"],
     "@typescript-eslint/interface-name-prefix": 2,
-    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-explicit-any": 0, // Revert this later
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-use-before-define": 0,
