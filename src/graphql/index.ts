@@ -1,30 +1,43 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, gql } from "apollo-server-express";
 
-import database from "../database";
+import locationModel from "./queries/location/model";
+import locationResolver from "./queries/location/resolver";
+import locationSchema from "./queries/location/schema";
 
-import LocationResolver from "./location/resolver";
-import LocationSchema from "./location/schema";
-import LocationModel from "./location/model";
+const linkSchema = gql`
+  scalar Date
 
-import QueryResolver from "./query/resolver";
-import QuerySchema from "./query/schema";
+  type Query {
+    _: Boolean
+  }
+
+  type Mutation {
+    _: Boolean
+  }
+
+  type Subscription {
+    _: Boolean
+  }
+`;
+
+const schema = [
+  linkSchema,
+  locationSchema,
+];
+
+const resolvers = [
+  locationResolver,
+];
+
+// import LocationModel from "./location/model";
 
 const server = new ApolloServer({
-  typeDefs: [
-    QuerySchema,
-    LocationSchema,
-  ],
+  typeDefs: schema,
+  resolvers,
   context: {
-    connectors: {
-      pg: database,
-    },
     models: {
-      Location: new LocationModel({ db: "pg" }),
+      location: locationModel,
     },
-  },
-  resolvers: {
-    Query: QueryResolver,
-    Location: LocationResolver,
   },
   playground: {
     endpoint: "/graphql",

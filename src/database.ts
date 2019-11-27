@@ -1,6 +1,6 @@
-import { Client } from "pg";
+import { Pool } from "pg";
 
-const client = new Client({
+const client = new Pool({
   host: "postgres",
   database: "postgres",
   port: 5432,
@@ -20,5 +20,6 @@ client.connect((err: any) => {
 });
 
 export default {
-  query: (text: string, params: any) => client.query(text, params),
+  // query: (text: string, params: any) => client.query(text, params),
+  client,
 };
