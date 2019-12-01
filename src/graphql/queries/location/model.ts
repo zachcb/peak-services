@@ -1,40 +1,30 @@
-import db from "../../../database";
+import fs from "fs";
+import datebase from "../../../database";
+
+// const checkTableExistsQuery = fs.readFileSync("src/database/sql/check-table-exists.sql").toString();
+// const createLocationsTableQuery = fs.readFileSync("src/database/sql/create-locations-table.sql").toString();
+const createLocationQuery = fs.readFileSync("src/database/sql/create-location.sql").toString();
 
 interface Create {
   name?: string;
   coordinates: [number, number];
 }
+// const tableExists = await datebase.query(
+//   checkTableExistsQuery,
+//   ["public", "locations"],
+// );
 
-export default {
+// if (!tableExists.rows[0].exists) {
+//   await datebase.query(
+//     createLocationsTableQuery,
+//   );
+// }
+
+export default (async () => ({
   async create({ name, coordinates }: Create) {
     try {
-      const tableExists = await db.client.query(
-        `SELECT EXISTS(
-          SELECT 1
-          FROM   information_schema.tables
-          WHERE  table_schema = 'public'
-          AND    table_name = 'locations'
-        )`,
-      );
-
-      if (!tableExists.rows[0].exists) {
-        await db.client.query(
-          `CREATE TABLE locations(
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            coordinates VARCHAR(100) NOT NULL
-          )`,
-        );
-      }
-
-      const response = await db.client.query(
-        `INSERT INTO locations (
-          id,
-          name,
-          coordinates
-        )
-        VALUES($1, $2, $3)
-        RETURNING *`,
+      const response = await datebase.query(
+        createLocationQuery,
         [1, name, coordinates],
       );
 
@@ -43,4 +33,5 @@ export default {
       console.error(error.stack);
     }
   },
-};
+})
+)();

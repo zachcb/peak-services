@@ -29,8 +29,6 @@ const resolvers = [
   locationResolver,
 ];
 
-// import LocationModel from "./location/model";
-
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,

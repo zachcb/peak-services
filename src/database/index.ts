@@ -20,6 +20,5 @@ client.connect((err: any) => {
 });
 
 export default {
-  // query: (text: string, params: any) => client.query(text, params),
-  client,
+  query: (text: string, params: any = []) => client.query(text, params),
 };
